@@ -11,6 +11,7 @@
 #import "DataSource.h"
 #import "FormValidator.h"
 #import "DataSource.h"
+#import "UIEffects.h"
 
 @interface ViewController ()
 
@@ -43,43 +44,15 @@
 }
 
 -(void) checkLogin{
+    
     //Check login
-    if([DataSource getTokenDefault] == NULL) [self fadeIn:loginViewContainer withDuration:1 andWait:0];
+    if([DataSource getTokenDefault] == NULL) [UIEffects fadeIn:loginViewContainer withDuration:1 andWait:0];
     else [self switchToHome];
 
 }
 
 - (void) viewDidAppear:(BOOL)animated{
-    //[self switchToHome];
-}
-
-//effetto transizione di uscita
--(void)fadeOut:(UIView*)viewToDissolve withDuration:(NSTimeInterval)duration andWait:(NSTimeInterval)wait
-{
-    [UIView beginAnimations: @"Fade Out" context:nil];
-    
-    // wait for time before begin
-    [UIView setAnimationDelay:wait];
-    
-    // druation of animation
-    [UIView setAnimationDuration:duration];
-    viewToDissolve.alpha = 0.0;
-    [UIView commitAnimations];
-}
-
-//effetto transizione di entrata
--(void)fadeIn:(UIView*)viewToFadeIn withDuration:(NSTimeInterval)duration andWait:(NSTimeInterval)wait
-{
-    [UIView beginAnimations: @"Fade In" context:nil];
-    
-    // wait for time before begin
-    [UIView setAnimationDelay:wait];
-    
-    // druation of animation
-    [UIView setAnimationDuration:duration];
-    viewToFadeIn.alpha = 1;
-    [UIView commitAnimations];
-    
+    [self switchToHome];
 }
 
 - (void)switchToBanner{
@@ -98,7 +71,6 @@
 }
 
 - (IBAction)loginButtonClick:(id)sender {
-    NSLog(@"email: %@", emailText.text);
     if ([emailText.text isEqualToString:@""] || [passwordText.text isEqualToString:@""]) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"Inserire username e password per il login!" delegate:self cancelButtonTitle:@"Hide" otherButtonTitles:nil];
         alert.alertViewStyle = UIAlertViewStyleDefault;
@@ -120,7 +92,7 @@
         return;
     }
     
-    [self fadeOut:formContainer withDuration:1 andWait:0];
+    [UIEffects fadeOut:formContainer withDuration:1 andWait:0];
     [backgroundTaskIndicator startAnimating];
     labelTask.text = @"Login in corso";
     [self performSelectorInBackground:@selector(simpleLogin) withObject:nil];
@@ -136,7 +108,7 @@
         [DataSource setLoginDefaultsWith:emailText.text andPassword:passwordText.text andToken:token];
         // getUserInfo e salva nel db
         User * user = [AccountManager getUserInfoWith:token andEmail:emailText.text];
-        [AccountManager getUserNCheckinsWith:token andIdUser:user.idUser];
+        NSLog(@"NUMERO LOGIN: %d", [AccountManager getUserNCheckinsWith:token andIdUser:user.idUser]);
         //passa alla home
         [self performSegueWithIdentifier:@"splashToHome" sender:self];
     }
@@ -148,9 +120,6 @@
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"Email e/o password errati!" delegate:self cancelButtonTitle:@"Hide" otherButtonTitles:nil];
     alert.alertViewStyle = UIAlertViewStyleDefault;
     [alert show];
-    
-    //visualizza il form
-    [self fadeIn:formContainer withDuration:1 andWait:0];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
