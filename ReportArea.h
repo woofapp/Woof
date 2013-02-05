@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "Area.h"
-#import "DLStarRatingControl.h"
 
-@interface ReportArea : UIViewController <MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DLStarRatingDelegate>
+@interface ReportArea : UIViewController <MKMapViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 
 @property (weak, nonatomic) IBOutlet UIView *mapViewContainer;
@@ -23,15 +22,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *mapAddressSelectedTextField;
 @property (weak, nonatomic) IBOutlet UITextField *addressSelectedTextField;
 @property (weak, nonatomic) IBOutlet UIView *selectImageMessageContainer;
-@property (weak, nonatomic) IBOutlet UIImageView *ratingImageView;
-@property (nonatomic) int userRatingChoice;
-@property (weak, nonatomic) IBOutlet UIView *ratingView;
-@property (weak, nonatomic) IBOutlet UITextView *commentTextView;
-
-
-- (IBAction)sendArea:(id)sender;
-
-- (IBAction)hideSendRating:(id)sender;
 
 
 /*

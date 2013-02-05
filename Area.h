@@ -43,6 +43,5 @@
 @property (nonatomic) int totalCheckins;
 
 - (void)setCoordinate: (CLLocationCoordinate2D)newCoordinate;
-- (NSComparisonResult)compare:(Area *)otherObject;
 
 @end

@@ -8,7 +8,7 @@
 
 #import "MiniGalleryCell.h"
 #import "AreaManager.h"
-#import "ImageUtility.h"
+#import "Base64.h"
 
 @implementation MiniGalleryCell
 
@@ -47,11 +47,18 @@
 -(void) downloadImage: (NSNumber *) imageId{
     NSString *b64Image = [AreaManager getImage:[imageId intValue]];
     
-    UIImage *image = [ImageUtility decodeBase64Image:b64Image];
+    [Base64 initialize];
+    NSData* image = [Base64 decode:b64Image];
     
-    if(image != NULL) [galleryCache setObject:image forKey:imageId];
+    UIImage *img;
     
-    [self performSelectorOnMainThread:@selector(downloadedImage:) withObject:image waitUntilDone:NO];
+    if(image != NULL){
+        
+        img = [UIImage imageWithData:image];
+        [galleryCache setObject:img forKey:imageId];
+    }
+    
+    [self performSelectorOnMainThread:@selector(downloadedImage:) withObject:img waitUntilDone:NO];
 }
 
 -(void) downloadedImage: (UIImage *)img{

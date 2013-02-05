@@ -32,8 +32,4 @@
     _coordinate = newCoordinate;
 }
 
-- (NSComparisonResult)compare:(Area *)otherObject {
-    return (self.myDistance >= otherObject.myDistance);
-}
-
 @end

@@ -10,7 +10,6 @@
 #import "User.h"
 #import "Area.h"
 #import "Dog.h"
-#import "Comment.h"
 #import "FMDatabase.h"
 
 @interface Database : NSObject
@@ -21,9 +20,6 @@
 @property (nonatomic) sqlite3 *database;
 @property (nonatomic) sqlite3_stmt *sqlStatement;
 @property (retain, nonatomic) FMDatabase *db;
-
-@property (retain, nonatomic) NSMutableArray *areasArray;
-@property (retain, nonatomic) NSArray *sortedAreasArray;
 
 /*
  * USERS
@@ -38,12 +34,7 @@
  */
 
 - (void) insertArea: (Area *) area;
-- (NSMutableArray *) getAreas: (CLLocation *)location andRadius: (int) radius;
-
-/*
- * IMAGES
- */
-- (void) insertLastImage: (NSString *)image forArea: (int)idArea;
+- (NSArray *) getAreas: (CLLocation *)location andRadius: (int) radius;
 
 /*
  * DOGS
@@ -61,11 +52,5 @@
 
 -(void) insertCheckinWith:(NSString *) idArea andIdUser:(NSString *) idUser andIdDog:(NSString *) idDog andDate:(NSString *) date;
 -(int) getUserNCheckins:(NSString *) idUser;
-
-/*
- * COMMENTS: ultimo commento per ogni area
- */
--(void) insertComment:(Comment*)comment forArea: (NSString *)idArea;
--(Comment*) getComment:(NSString *)idArea;
 
 @end

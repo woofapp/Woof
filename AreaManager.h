@@ -28,9 +28,8 @@
  * DB
  */
 
-+ (NSMutableArray *) getAreasFromDB: (double) latitude andLongitude: (double) longitude andRadius: (int) radius;
++ (NSArray *) getAreasFromDB: (double) latitude andLongitude: (double) longitude andRadius: (int) radius;
 + (void) insertAreaInDB: (Area*) area;
-+(void) insertLastImage: (NSString *)image forArea: (int)idArea;
 
 
 /*

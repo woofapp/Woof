@@ -8,12 +8,10 @@
 
 #import "AreaDetails.h"
 #import "AreaManager.h"
+#import "Base64.h"
 #import "MiniGalleryCell.h"
 #import "Comment.h"
 #import "FormatText.h"
-#import "ImageUtility.h"
-#import "UIEffects.h"
-#import "EditAreaAddress.h"
 
 @interface AreaDetails ()
 
@@ -119,12 +117,16 @@
 }
 
 -(UIImage*)convertStringToImage:(NSString *)string{
+    [Base64 initialize];
     
-    UIImage *image = [ImageUtility decodeBase64Image:string];
+    NSData* image = [Base64 decode:string];
     
-    if(image == NULL) image = [UIImage imageNamed: @"no_personal_image.png"];
+    UIImage *img = NULL;
     
-    return image;
+    if(image != NULL) img = [UIImage imageWithData:image];
+    else img = [UIImage imageNamed: @"no_personal_image.png"];
+    
+    return img;
 }
 
 - (void)setImageRating: (int)rating{
@@ -171,7 +173,7 @@
 }
 
 -(void)showSendRating{
-    [UIEffects fadeIn:ratingBackgroundView withDuration:1 andWait:0];
+    [self fadeIn:ratingBackgroundView withDuration:1 andWait:0];
 }
 
 -(void) viewDidDisappear:(BOOL)animated{
@@ -202,6 +204,35 @@
         noImageMessageContainer.backgroundColor = [UIColor colorWithRed: 0.0 green: 0.0 blue: 0.0 alpha:0.5];
         
     }
+    
+}
+
+//effetto transizione di uscita
+-(void)fadeOut:(UIView*)viewToDissolve withDuration:(NSTimeInterval)duration andWait:(NSTimeInterval)wait
+{
+    [UIView beginAnimations: @"Fade Out" context:nil];
+    
+    // wait for time before begin
+    [UIView setAnimationDelay:wait];
+    
+    // druation of animation
+    [UIView setAnimationDuration:duration];
+    viewToDissolve.alpha = 0.0;
+    [UIView commitAnimations];
+}
+
+//effetto transizione di entrata
+-(void)fadeIn:(UIView*)viewToFadeIn withDuration:(NSTimeInterval)duration andWait:(NSTimeInterval)wait
+{
+    [UIView beginAnimations: @"Fade In" context:nil];
+    
+    // wait for time before begin
+    [UIView setAnimationDelay:wait];
+    
+    // druation of animation
+    [UIView setAnimationDuration:duration];
+    viewToFadeIn.alpha = 1;
+    [UIView commitAnimations];
     
 }
 
@@ -262,7 +293,7 @@
 }
 
 - (IBAction)hideSendRating:(id)sender {
-    [UIEffects fadeOut:ratingBackgroundView withDuration:1 andWait:0];
+    [self fadeOut:ratingBackgroundView withDuration:1 andWait:0];
 }
 
 - (IBAction)goToSearchArea:(id)sender {
@@ -291,15 +322,6 @@
  */
 -(void)newRating:(DLStarRatingControl *)control :(float)rating {
     userRatingChoice = rating;
-}
-
-//Passaggio di parametri prima di effettuare il Segue
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([[segue identifier] isEqualToString:@"editAddressSegue"]) {
-        EditAreaAddress *vc = [segue destinationViewController];
-        [vc setArea:area];
-    }
 }
 
 
